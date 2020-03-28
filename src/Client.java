@@ -156,12 +156,9 @@ public class Client {
             String[] rawArgs = split.toArray(new String[split.size()]);
             // Remainder, if any, are arguments
 
-            // Process user input
-            if ("exit".startsWith(cmd)) {
-                // exit command applies in either state
-                done = true;
-            } // "Main" state commands
-            else if (state.equals("Main")) {
+            Command command = new CommandWords().get(cmd);
+            command.execute();
+            if (state.equals("Main")) {
                 if ("compose".startsWith(cmd)) {
                     // Switch to "Drafting" state and start a new "draft"
                     state = "Drafting";
