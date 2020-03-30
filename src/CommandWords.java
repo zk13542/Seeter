@@ -16,9 +16,6 @@ public class CommandWords {
 
     public CommandWords() {
         com.put("exit", new ExitCommand());
-        com.put("fetch", new ExitCommand());
-        com.put("compose", new ExitCommand());
-        com.put("list", new ExitCommand());
 
     }
 

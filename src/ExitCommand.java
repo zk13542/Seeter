@@ -12,7 +12,6 @@ public class ExitCommand implements Command {
 
     @Override
     public void execute() {
-        System.out.println("Thanks for using, see you soon.");
         System.exit(0);
     }
 

@@ -11,6 +11,8 @@ import sep.seeter.net.message.Bye;
 import sep.seeter.net.message.Publish;
 import sep.seeter.net.message.SeetsReply;
 import sep.seeter.net.message.SeetsReq;
+import sep.seeter.net.message.TopicsReply;
+import sep.seeter.net.message.TopicsReq;
 
 /**
  * This class is an initial work-in-progress prototype for a command line Seeter
@@ -155,14 +157,19 @@ public class Client {
             String cmd = split.remove(0);  // First word is the command keyword
             String[] rawArgs = split.toArray(new String[split.size()]);
             // Remainder, if any, are arguments
-
             Command command = new CommandWords().get(cmd);
             command.execute();
+
             if (state.equals("Main")) {
-                if ("compose".startsWith(cmd)) {
+                if ("compose ".startsWith(cmd)) {
                     // Switch to "Drafting" state and start a new "draft"
                     state = "Drafting";
                     draftTopic = rawArgs[0];
+                } else if ("list".startsWith(cmd)) {
+                    helper.chan.send(new TopicsReq());
+                    TopicsReply rep = (TopicsReply) helper.chan.receive();
+                    System.out.print(
+                            helper.formatTopics(rep.topics));
                 } else if ("fetch".startsWith(cmd)) {
                     // Fetch seets from server
                     helper.chan.send(new SeetsReq(rawArgs[0]));
@@ -179,6 +186,10 @@ public class Client {
                     String line = Arrays.stream(rawArgs).
                             collect(Collectors.joining());
                     draftLines.add(line);
+                } else if ("discard".startsWith(cmd)) {
+                    draftLines.clear();
+                    state = "Main";
+                    draftTopic = null;
                 } else if ("send".startsWith(cmd)) {
                     // Send drafted seets to the server, and go back to "Main" state
                     helper.chan.send(new Publish(user, draftTopic, draftLines));
