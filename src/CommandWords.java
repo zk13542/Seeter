@@ -14,8 +14,9 @@ public class CommandWords {
 
     private Map<String, Command> com = new HashMap<>();
 
-    public CommandWords() {
+    public CommandWords(String topic) {
         com.put("exit", new ExitCommand());
+        com.put("fetch", new fetchCommand(topic));
 
     }
 

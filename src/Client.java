@@ -157,9 +157,8 @@ public class Client {
             String cmd = split.remove(0);  // First word is the command keyword
             String[] rawArgs = split.toArray(new String[split.size()]);
             // Remainder, if any, are arguments
-            Command command = new CommandWords().get(cmd);
+            Command command = new CommandWords(rawArgs[0]).get(cmd);
             command.execute();
-
             if (state.equals("Main")) {
                 if ("compose ".startsWith(cmd)) {
                     // Switch to "Drafting" state and start a new "draft"
@@ -170,12 +169,7 @@ public class Client {
                     TopicsReply rep = (TopicsReply) helper.chan.receive();
                     System.out.print(
                             helper.formatTopics(rep.topics));
-                } else if ("fetch".startsWith(cmd)) {
-                    // Fetch seets from server
-                    helper.chan.send(new SeetsReq(rawArgs[0]));
-                    SeetsReply rep = (SeetsReply) helper.chan.receive();
-                    System.out.print(
-                            helper.formatFetched(rawArgs[0], rep.users, rep.lines));
+
                 } else {
                     System.out.println("Could not parse command/args.");
                 }
