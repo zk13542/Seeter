@@ -111,7 +111,7 @@ public class Client {
             if (this.printSplash == true) {
                 System.out.print(helper.formatSplash(this.user));
             }
-            loop(helper, reader);
+            loop(reader);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         } finally {
@@ -125,19 +125,9 @@ public class Client {
     }
 
 // Main loop: print user options, read user input and process
-    void loop(CLFormatter helper, BufferedReader reader) throws IOException,
-            ClassNotFoundException {
+    void loop(BufferedReader reader) throws IOException, ClassNotFoundException {
+
         Model model = new Model();
-
-        // The app is in one of two states: "Main" or "Drafting"
-        String state = "Main";  // Initial state
-
-        // Holds the current draft data when in the "Drafting" state
-        String draftTopic = null;
-        List<String> draftLines = new LinkedList<>();
-        model.setBodyline(draftLines);
-        model.setState(state);
-        model.setDrafttopic(draftTopic);
         model.setReader(reader);
         View view = new View();
         Controller controller = new Controller(model, view);

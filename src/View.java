@@ -22,7 +22,7 @@ public class View {
     String[] rawArgs;
 
     public void printuseroptions(String state, String draftTopic, List<String> draftLines, BufferedReader reader) throws IOException {
-        // Print user options
+
         if (state.equals("Main")) {
             System.out.print(helper.formatMainMenuPrompt());
         } else {  // state = "Drafting"
@@ -58,5 +58,4 @@ public class View {
     public String[] getrawArgs() {
         return rawArgs;
     }
-
 }
