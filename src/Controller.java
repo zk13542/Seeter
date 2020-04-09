@@ -19,9 +19,6 @@ public class Controller {
     private View view;
     private String cmd;
     private String[] rawArgs;
-    private String state = "Main";
-    List<String> draftLines = new LinkedList<>();
-    String draftTopic = null;
 
     ExitCommand exit = new ExitCommand();
 
@@ -42,20 +39,44 @@ public class Controller {
         return model.getReader();
     }
 
-    public void updateView() throws IOException {
+    public void View() throws IOException {
 
-        view.printuseroptions(state, draftTopic, draftLines, model.getReader());
+        view.printuseroptions(model.getstate(), model.getdraftTopic(), model.getdraftLines(), model.getReader());
 
     }
 
-    public void runcmd() {
+    public void runcmd(String state) {
         cmd = view.getcmd();
         rawArgs = view.getrawArgs();
-        if (cmd.startsWith("exit")) {
-            exit.execute();
-        } else if (cmd.startsWith("compose")) {
-            state = "drafting";
-            draftTopic = rawArgs[0];
+        if (cmd != null) {
+            if ("exit".startsWith(cmd)) {
+
+            } // "Main" state commands
+            else if (state.equals("Main")) {
+                if ("compose".startsWith(cmd)) {
+
+                } else if ("fetch".startsWith(cmd)) {
+
+                } else if ("list".startsWith(cmd)) {
+
+                } else {
+                    System.out.println("Could not parse command/args.");
+                }
+            } // "Drafting" state commands
+            else if (state.equals("Drafting")) {
+                if ("body".startsWith(cmd)) {
+                    // Add a seet body line
+
+                } else if ("send".startsWith(cmd)) {
+
+                } else if ("discard".startsWith(cmd)) {
+
+                } else {
+                    System.out.println("Could not parse command/args.");
+                }
+            } else {
+                System.out.println("Could not parse command/args.");
+            }
         } else {
             System.out.println("Could not parse command/args.");
         }

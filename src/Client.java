@@ -128,54 +128,20 @@ public class Client {
     void loop(BufferedReader reader) throws IOException, ClassNotFoundException {
 
         Model model = new Model();
-        model.setReader(reader);
         View view = new View();
         Controller controller = new Controller(model, view);
+        model.setdone(false);
+        model.setdraftTopic(null);
+        model.setstate("Main");
+        model.setReader(reader);
+        boolean done = model.getdone();
 
         // The loop
-        for (boolean done = false; !done;) {
+        while (!done) {
 
-            // Print user options
-            controller.updateView();
-            controller.runcmd();
+            controller.View();
+            controller.runcmd(model.getstate());
 
-            // Read a line of user input
-//            if (state.equals("Main")) {
-//                if ("compose ".startsWith(cmd)) {
-//                    // Switch to "Drafting" state and start a new "draft"
-//                    state = "Drafting";
-//                    draftTopic = rawArgs[0];
-//                } else if ("list".startsWith(cmd)) {
-//                    helper.chan.send(new TopicsReq());
-//                    TopicsReply rep = (TopicsReply) helper.chan.receive();
-//                    System.out.print(
-//                            helper.formatTopics(rep.topics));
-//
-//                } else {
-//                    System.out.println("dddddddddd");
-//                }
-//            } // "Drafting" state commands
-//            else if (state.equals("Drafting")) {
-//                if ("body".startsWith(cmd)) {
-//                    // Add a seet body line
-//                    String line = Arrays.stream(rawArgs).
-//                            collect(Collectors.joining());
-//                    draftLines.add(line);
-//                } else if ("discard".startsWith(cmd)) {
-//                    draftLines.clear();
-//                    state = "Main";
-//                    draftTopic = null;
-//                } else if ("send".startsWith(cmd)) {
-//                    // Send drafted seets to the server, and go back to "Main" state
-//                    helper.chan.send(new Publish(user, draftTopic, draftLines));
-//                    state = "Main";
-//                    draftTopic = null;
-//                } else {
-//                    System.out.println("Could not parse command/args.");
-//                }
-//            } else {
-//                System.out.println("Could not parse command/args.");
-//            }
         }
         return;
     }
