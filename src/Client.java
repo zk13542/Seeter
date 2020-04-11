@@ -130,17 +130,18 @@ public class Client {
         Model model = new Model();
         View view = new View();
         Controller controller = new Controller(model, view);
-        model.setdone(false);
-        model.setdraftTopic(null);
-        model.setstate("Main");
+
         model.setReader(reader);
-        boolean done = model.getdone();
+        model.setstate("Main");
+        model.setdraftTopic(null);
+        model.setuser(user);
+        model.setdone(false);
 
         // The loop
-        while (!done) {
-
+        for (boolean done = model.getdone(); !done;) {
             controller.View();
             controller.runcmd(model.getstate());
+            done = model.getdone();
 
         }
         return;

@@ -18,15 +18,14 @@ import java.util.stream.Collectors;
 public class View {
 
     CLFormatter helper;
-    String cmd;
-    String[] rawArgs;
+    List<String> input;
 
     public void printuseroptions(String state, String draftTopic, List<String> draftLines, BufferedReader reader) throws IOException {
 
         if (state.equals("Main")) {
-            System.out.print(helper.formatMainMenuPrompt());
+            System.out.print(CLFormatter.formatMainMenuPrompt());
         } else {  // state = "Drafting"
-            System.out.print(helper.formatDraftingMenuPrompt(draftTopic, draftLines));
+            System.out.print(CLFormatter.formatDraftingMenuPrompt(draftTopic, draftLines));
         }
         // Read a line of user input
         String raw = reader.readLine();
@@ -34,28 +33,17 @@ public class View {
             throw new IOException("Input stream closed while reading.");
         }
         // Trim leading/trailing white space, and split words according to spaces
-        List<String> split = Arrays.stream(raw.trim().split("\\ "))
-                .map(x -> x.trim()).collect(Collectors.toList());
-        String cmd = split.remove(0);  // First word is the command keyword
-        String[] rawArgs = split.toArray(new String[split.size()]);
-        // Remainder, if any, are arguments
-        setcmd(cmd);
-        setrawArgs(rawArgs);
+        List<String> split = Arrays.stream(raw.trim().split("\\ ")).map(x -> x.trim()).collect(Collectors.toList());
+        setinput(split);
+
     }
 
-    public void setcmd(String cmd) {
-        this.cmd = cmd;
+    public void setinput(List<String> input) {
+        this.input = input;
     }
 
-    public void setrawArgs(String[] rawArgs) {
-        this.rawArgs = rawArgs;
+    public List<String> getinput() {
+        return input;
     }
 
-    public String getcmd() {
-        return cmd;
-    }
-
-    public String[] getrawArgs() {
-        return rawArgs;
-    }
 }

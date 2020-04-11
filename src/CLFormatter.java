@@ -67,30 +67,4 @@ public class CLFormatter {
         return b.toString();
     }
 
-    static String formatFetched(String topic, List<String> users,
-            List<String> fetched) {
-        StringBuilder b = new StringBuilder("Fetched: #");
-        b.append(topic);
-        Iterator<String> it = fetched.iterator();
-        for (String user : users) {
-            b.append("\n");
-            b.append(String.format("%12s", user));
-            b.append("  ");
-            b.append(it.next());
-        };
-        b.append("\n");
-        return b.toString();
-    }
-
-    String formatTopics(Set<String> topics) {
-        StringBuilder b = new StringBuilder("Topic list: #");
-        for (String topic : topics) {
-            b.append("\n");
-            b.append(String.format("%12s", topic));
-            b.append("  ");
-        }
-        ;
-        b.append("\n");
-        return b.toString();
-    }
 }

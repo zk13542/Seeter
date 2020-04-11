@@ -1,5 +1,7 @@
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sep.seeter.net.message.SeetsReply;
@@ -29,12 +31,26 @@ public class fetchCommand implements Command {
         try {
             helper.chan.send(new SeetsReq(Topic));
             SeetsReply rep = (SeetsReply) helper.chan.receive();
-            System.out.print(helper.formatFetched(Topic, rep.users, rep.lines));
+            System.out.print(formatFetched(Topic, rep.users, rep.lines));
         } catch (IOException ex) {
             Logger.getLogger(fetchCommand.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(fetchCommand.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    public static String formatFetched(String topic, List<String> users, List<String> fetched) {
+        StringBuilder b = new StringBuilder("Fetched: #");
+        b.append(topic);
+        Iterator<String> it = fetched.iterator();
+        for (String user : users) {
+            b.append("\n");
+            b.append(String.format("%12s", user));
+            b.append("  ");
+            b.append(it.next());
+        };
+        b.append("\n");
+        return b.toString();
     }
 }

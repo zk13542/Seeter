@@ -10,9 +10,11 @@
  */
 public class ExitCommand implements Command {
 
+    Model model;
+
     @Override
     public void execute() {
-        System.exit(0);
+
     }
 
 }

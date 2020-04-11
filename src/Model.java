@@ -17,6 +17,7 @@ public class Model {
     private String drafttopic;
     private List<String> draftlines;
     private String state;
+    private String user;
     private boolean done;
 
     public void setReader(BufferedReader reader) {
@@ -49,6 +50,14 @@ public class Model {
 
     public String getstate() {
         return state;
+    }
+
+    public void setuser(String user) {
+        this.user = user;
+    }
+
+    public String getuser() {
+        return user;
     }
 
     public void setdone(boolean done) {
