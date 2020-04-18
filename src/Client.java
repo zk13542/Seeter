@@ -3,9 +3,12 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import sep.seeter.net.message.Bye;
 import sep.seeter.net.message.Publish;
@@ -70,10 +73,13 @@ public class Client {
     String user;
     String host;
     int port;
+    private static final String RESOURCE_PATH = "resources/Message";
+    private final ResourceBundle strings;
 
     boolean printSplash = true;
 
     Client() {
+        strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("en", "GB"));
     }
 
     public static void main(String[] args) throws IOException {
@@ -109,7 +115,9 @@ public class Client {
             helper = new CLFormatter(this.host, this.port);
 
             if (this.printSplash == true) {
-                System.out.print(helper.formatSplash(this.user));
+                String pattern = strings.getString("Welcome_Message");
+                String message = MessageFormat.format(pattern, this.user);
+                System.out.print(message);
             }
             loop(reader);
         } catch (Exception ex) {
@@ -132,18 +140,17 @@ public class Client {
         Controller controller = new Controller(model, view);
 
         model.setReader(reader);
-        model.setstate("Main");
+        model.setstate(strings.getString("main"));
         model.setdraftTopic(null);
         model.setuser(user);
         model.setdone(false);
 
         // The loop
-        for (boolean done = model.getdone(); !done;) {
+        for (boolean done = false; !done;) {
             controller.View();
             controller.runcmd(model.getstate());
             done = model.getdone();
 
         }
-        return;
     }
 }

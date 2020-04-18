@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 /*
@@ -24,12 +26,13 @@ public class Controller {
     private List<String> input;
     private String line;
     private List<String> draftlines = new LinkedList<>();
-
-    ExitCommand exit = new ExitCommand();
+    private static final String RESOURCE_PATH = "resources/Message";
+    private final ResourceBundle strings;
 
     public Controller(Model model, View view) {
         this.model = model;
         this.view = view;
+        strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("en", "GB"));
 
     }
 
@@ -56,49 +59,53 @@ public class Controller {
         rawArgs = input.toArray(new String[input.size()]);
         // Remainder, if any, are arguments 
 
-        if ("exit".equals(cmd)) {
+        if (message("exit").equals(cmd)) {
             model.setdone(true);
         } // "Main" state commands
-        else if (state.equals("Main")) {
-            if ("compose".startsWith(cmd) && rawArgs.length != 0) {
+        else if (state.equals(message("main"))) {
+            if (message("compose").startsWith(cmd) && rawArgs.length != 0) {
                 docompose(rawArgs[0]);
-            } else if ("fetch".startsWith(cmd) && rawArgs.length != 0) {
+            } else if (message("fetch").startsWith(cmd) && rawArgs.length != 0) {
                 fetchCommand fetch = new fetchCommand(rawArgs[0]);
                 fetch.execute();
-            } else if ("list".equals(cmd)) {
+            } else if (message("list").equals(cmd)) {
                 ListCommand list = new ListCommand();
                 list.execute();
             } else {
-                System.out.println("Could not parse command/args.");
+                System.out.println(message("error"));
             }
         } // "Drafting" state commands
-        else if (state.equals("Drafting")) {
-            if ("body".startsWith(cmd) && rawArgs.length != 0) {
+        else if (state.equals(message("draft"))) {
+            if (message("body").startsWith(cmd) && rawArgs.length != 0) {
                 dobody(rawArgs);
-            } else if ("send".equals(cmd)) {
+            } else if (message("send").equals(cmd)) {
                 SendCommand send = new SendCommand(model.getuser(), model.getdraftTopic(), draftlines);
                 send.execute();
-                model.setstate("Main");
+                model.setstate(message("main"));
                 model.setdraftTopic(null);
 
-            } else if ("discard".equals(cmd)) {
-                model.setstate("Main");
+            } else if (message("discard").equals(cmd)) {
+                model.setstate(message("main"));
                 model.setdraftLines(null);
                 model.setdraftTopic(null);
 
             } else {
-                System.out.println("Could not parse command/args.");
+                System.out.println(message("error"));
             }
         }
     }
 
     public void docompose(String arg) {
-        model.setstate("Drafting");
+        model.setstate(message("draft"));
         model.setdraftTopic(arg);
     }
 
     public void dobody(String[] args) {
         line = Arrays.stream(args).collect(Collectors.joining());
         draftlines.add(line);
+    }
+
+    public String message(String key) {
+        return strings.getString(key);
     }
 }

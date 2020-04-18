@@ -27,33 +27,6 @@ public class CLFormatter {
         return this.chan.receive();
     }
 
-    /* Following are the auxiliary methods for formatting the UI text */
-    static String formatSplash(String user) {
-        return "\nHello " + user + "!\n"
-                + "Note:  Commands can be abbreviated to any prefix, "
-                + "e.g., fe [mytopic].\n";
-    }
-
-    static String formatMainMenuPrompt() {
-        return "\n[Main] Enter command: "
-                + "fetch [mytopic], "
-                + "compose [mytopic], "
-                + "list, "
-                + "exit"
-                + "\n> ";
-    }
-
-    static String formatDraftingMenuPrompt(String topic,
-            List<String> lines) {
-        return "\nDrafting: " + formatDrafting(topic, lines)
-                + "\n[Drafting] Enter command: "
-                + "body [mytext], "
-                + "send, "
-                + "discard, "
-                + "exit"
-                + "\n> ";
-    }
-
     static String formatDrafting(String topic, List<String> lines) {
         StringBuilder b = new StringBuilder("#");
         b.append(topic);

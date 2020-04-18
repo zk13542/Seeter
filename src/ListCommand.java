@@ -35,7 +35,7 @@ public class ListCommand implements Command {
         }
     }
 
-    public String formatTopics(Set<String> topics) {
+    public static String formatTopics(Set<String> topics) {
         StringBuilder b = new StringBuilder("Topic list: #");
         for (String topic : topics) {
             b.append("\n");
