@@ -27,6 +27,7 @@ public class CLFormatter {
         return this.chan.receive();
     }
 
+    /* Following are the auxiliary methods for formatting the UI text */
     static String formatDrafting(String topic, List<String> lines) {
         StringBuilder b = new StringBuilder("#");
         b.append(topic);

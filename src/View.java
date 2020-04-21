@@ -30,12 +30,13 @@ public class View {
     }
 
     public void printuseroptions(String state, String draftTopic, List<String> draftLines, BufferedReader reader) throws IOException {
-        String pattern = strings.getString("formatDraftingMenuPrompt");
-        String message = MessageFormat.format(pattern, CLFormatter.formatDrafting(draftTopic, draftLines));
+
         if (state.equals("Main")) {
             System.out.print(strings.getString("formatMainMenuPrompt"));
         } else {  // state = "Drafting"
-            System.out.print(message);
+            String arg1 = strings.getString("formatDraftingMenuPrompt");
+            String draftmenu = MessageFormat.format(arg1, CLFormatter.formatDrafting(draftTopic, draftLines));
+            System.out.print(draftmenu);
         }
         // Read a line of user input
         String raw = reader.readLine();

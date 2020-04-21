@@ -2,8 +2,6 @@
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sep.seeter.net.message.SeetsReply;
@@ -25,7 +23,6 @@ public class fetchCommand implements Command {
 
     public fetchCommand(String topic) {
         Topic = topic;
-
     }
 
     @Override

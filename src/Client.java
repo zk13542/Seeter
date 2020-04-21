@@ -115,9 +115,9 @@ public class Client {
             helper = new CLFormatter(this.host, this.port);
 
             if (this.printSplash == true) {
-                String pattern = strings.getString("Welcome_Message");
-                String message = MessageFormat.format(pattern, this.user);
-                System.out.print(message);
+                String arg1 = strings.getString("Welcome_Message");
+                String welcome = MessageFormat.format(arg1, "KZ");
+                System.out.print(welcome);
             }
             loop(reader);
         } catch (Exception ex) {
@@ -140,17 +140,18 @@ public class Client {
         Controller controller = new Controller(model, view);
 
         model.setReader(reader);
-        model.setstate(strings.getString("main"));
+        model.setstate("Main");
         model.setdraftTopic(null);
         model.setuser(user);
         model.setdone(false);
 
         // The loop
-        for (boolean done = false; !done;) {
+        for (boolean done = model.getdone(); !done;) {
             controller.View();
             controller.runcmd(model.getstate());
             done = model.getdone();
 
         }
+        return;
     }
 }
